@@ -1,77 +1,126 @@
-# Kontrol Lampu dengan Computer Vision & MQTT
+# 🖐️ Kontrol Lampu dengan Gesture Tangan (Computer Vision & MQTT)
 
-Aplikasi Python ini memungkinkan Anda mengontrol lampu (atau perangkat IoT lainnya) menggunakan **gesture tangan** yang dideteksi melalui webcam. Aplikasi dibuat menggunakan **OpenCV**, **MediaPipe**, dan **Paho-MQTT**.
+Selamat datang! Project ini memungkinkan Anda untuk menyalakan dan mematikan lampu (atau perangkat elektronik lainnya) hanya dengan gerakan tangan di depan webcam komputer Anda.
 
-## Fitur Utama
+Project ini dibuat khusus agar **mudah digunakan**, bahkan untuk pemula. Sistem ini menggunakan kecerdasan buatan (AI) untuk mendeteksi tangan Anda dan mengirim perintah kemuduan ke saklar lampu pintar melalui internet (MQTT).
 
-- **Deteksi Tangan Presisi**: Menggunakan Google MediaPipe Hand Landmarker.
-- **Gesture Buka/Tutup**:
-  - **Tangan Mengepal (Fist)**: Mengirim sinyal `0` (OFF).
-  - **Tangan Terbuka (Open)**: Mengirim sinyal `1` (ON).
-- **Safety Lock / Mode Pengaman** 🔒:
-  - Mencegah "kepencet" saat Anda hanya lewat di depan kamera.
-  - **Default**: Terkunci (LOCKED).
-  - **Unlock**: Tunjukkan gesture **Peace/Victory (✌️)**.
-  - **Auto-Lock**: Otomatis terkunci kembali setelah 5 detik.
-- **Stabilisasi & Cooldown**:
-  - Mencegah *flickering* (lampu kedip-kedip) saat transisi tangan.
-  - Ada jeda (cooldown) 2 detik setelah setiap pengiriman perintah.
-- **Visual Feedback**: Tampilan status Lock, Timer, dan Light ON/OFF langsung di layar.
+![Demo](https://img.shields.io/badge/Status-Active-green) ![Python](https://img.shields.io/badge/Python-3.8%2B-blue)
 
-## Persyaratan Sistem
+## 🌟 Fitur Unggulan
 
-- Python 3.8 - 3.13
-- Webcam yang aktif
-- Koneksi Internet (untuk akses ke MQTT Broker publik)
+- **✋ Kontrol Tanpa Sentuh**:
+  - **Buka Tangan (✋)** = Nyalakan Lampu (ON).
+  - **Kepal Tangan (✊)** = Matikan Lampu (OFF).
+  
+- **🔒 Mode Pengaman (Safety Lock)**:
+  - Tidak perlu khawatir lampu nyala/mati sendiri saat Anda "hanya lewat" di depan kamera.
+  - Sistem akan terkunci otomatis. Anda harus membuka kunci dulu dengan gaya "Peace/Victory" (✌️).
+  
+- **⚡ Stabil & Cerdas**:
+  - **Anti-Kedip**: Lampu tidak akan nyala-mati cepat (flickering) jika tangan Anda gemetar.
+  - **Cooldown**: Ada jeda istirahat 2 detik setelah mengirim perintah, supaya tidak spamming.
 
-## Instalasi
+---
 
-1. **Clone Repository ini**:
-   ```bash
-   git clone https://github.com/duwiarsana/kontrol-lampu-computer-vision.git
-   cd kontrol-lampu-computer-vision
-   ```
+## 🛠️ Persiapan (Apa yang Anda Butuhkan)
 
-2. **Install Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-   *Dependency utama: `opencv-python`, `mediapipe`, `paho-mqtt`.*
+Sebelum memulai, pastikan Anda memiliki:
+1. **Laptop/PC** dengan webcam.
+2. **Python** terinstall (Download di [python.org](https://www.python.org/downloads/)).
+3. **Koneksi Internet** (untuk mengirim data ke lampu).
 
-3. **Pastikan Model MediaPipe Ada**:
-   File `hand_landmarker.task` harus ada di folder yang sama dengan `main.py`. Jika tidak ada, download dari [Google MediaPipe Models](https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task).
+---
 
-## Cara Penggunaan
+## 🚀 Cara Instalasi (Langkah demi Langkah)
 
-1. **Jalankan Aplikasi**:
+### 1. Download Project Ini
+Buka terminal (Command Prompt/PowerShell/Terminal) dan jalankan perintah:
+
+```bash
+git clone https://github.com/duwiarsana/kontrol-lampu-computer-vision.git
+cd kontrol-lampu-computer-vision
+```
+*Atau: Klik tombol hijau "Code" di atas kanan halaman GitHub -> "Download ZIP", lalu ekstrak foldernya.*
+
+### 2. Install Library Pendukung
+Aplikasi ini butuh beberapa "alat" tambahan (library) agar bisa berjalan. Jalankan perintah ini di terminal (di dalam folder project tadi):
+
+```bash
+pip install -r requirements.txt
+```
+*Tunggu sampai proses selesai. Pastikan internet lancar.*
+
+### 3. (PENTING) Download Model AI
+Aplikasi butuh file otak AI (`hand_landmarker.task`) agar bisa melihat tangan. 
+**[Klik Disini untuk Download](https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task)**.
+
+Setelah didownload, **pindahkan/copy file `hand_landmarker.task` tersebut ke dalam folder project ini** (folder yang sama dengan file `main.py`).
+
+---
+
+## 🎮 Cara Menggunakan
+
+1. **Jalankan Aplikasi**
+   Ketik perintah ini di terminal:
    ```bash
    python main.py
    ```
-   *Catatan untuk pengguna macOS: Jika kamera tidak terbuka, pastikan Terminal Anda sudah diberikan izin akses Kamera di System Settings -> Privacy & Security.*
+   *(Jika muncul error "camera permission", pastikan Terminal Anda sudah diizinkan akses kamera di pengaturan Laptop)*.
 
-2. **Kontrol Gestur**:
-   - **Buka Kunci**: Tunjukkan dua jari (✌️) ke kamera hingga status berubah menjadi **ACTIVE (Hijau)**.
-   - **Nyalakan Lampu**: Buka telapak tangan Anda.
-   - **Matikan Lampu**: Kepalkan tangan Anda.
-   - **Tungu Cooldown**: Setelah perintah terkirim, akan muncul tulisan `COOLDOWN...` selama 2 detik.
+2. **Lihat Layar Kamera**
+   Akan muncul jendela baru yang menampilkan wajah Anda. Perhatikan tulisan status di pojok kiri atas.
 
-## Konfigurasi MQTT
+3. **Langkah-Langkah Kontrol**:
+   
+   **Langkah 1: Buka Kunci (Unlock)**
+   - Saat baru mulai, statusnya **MERAH (LOCKED)**.
+   - Angkat tangan dan buat simbul **PEACE / VICTORY (✌️)**.
+   - Status akan berubah jadi **HIJAU (ACTIVE)**. Anda punya waktu 5 detik!
 
-Secara default, aplikasi dikonfigurasi ke:
-- **Broker**: `202.74.74.42`
-- **Port**: `1883`
-- **Topic**: `gesture/control`
-
-Anda dapat mengubah konfigurasi ini dengan mengedit bagian atas file `main.py`:
-```python
-MQTT_BROKER = "202.74.74.42"
-MQTT_TOPIC = "custom/topic"
-```
-
-## Troubleshooting
-
-- **Error `ImportError: ... solutions`**: Pastikan anda menggunakan versi MediaPipe yang sesuai atau script `main.py` yang sudah dimigrasi ke Tasks API (versi di repo ini sudah menggunakan Tasks API yang baru).
-- **MQTT Gagal Connect**: Cek koneksi internet Anda atau pastikan broker MQTT sedang online.
+   **Langkah 2: Kendalikan Lampu**
+   - Saat status **HIJAU (ACTIVE)**:
+   - **Buka Telapak Tangan (✋)** -> Lampu NYALA (Data '1' terkirim).
+   - **Kepalkan Tangan (✊)** -> Lampu MATI (Data '0' terkirim).
+   
+   *Setelah 5 detik tidak ada aktivitas, sistem akan terkunci lagi otomatis demi keamanan.*
 
 ---
-Dikembangkan oleh Duwi Arsana.
+
+## ⚙️ Pengaturan Lanjutan (MQTT)
+
+Bagi Anda yang mengerti teknis IoT, aplikasi ini mengirim data ke MQTT Broker dengan detail berikut:
+
+- **Broker**: `202.74.74.42` (Public)
+- **Port**: `1883`
+- **Topic**: `gesture/control`
+- **Payload**:
+  - `1`: Untuk menyalakan.
+  - `0`: Untuk mematikan.
+
+Anda bisa mengganti konfigurasi ini dengan membuka file `main.py` menggunakan Notepad/Text Editor dan ubah bagian paling atas:
+
+```python
+MQTT_BROKER = "alamat.broker.anda"
+MQTT_TOPIC = "rumah/kamar/lampu"
+```
+
+---
+
+## ❓ Masalah yang Sering Muncul (Troubleshooting)
+
+1. **"Error: Could not open camera"**
+   - Pastikan webcam tidak sedang dipakai aplikasi lain (Zoom, Meet, dll).
+   - Jika di MacOS: Buka `System Settings` -> `Privacy & Security` -> `Camera`, lalu centang/izinkan Terminal/Code Editor Anda. Lalu restart terminal.
+
+2. **Jendela Kamera tidak muncul / Error `ImportError`**
+   - Pastikan Anda sudah menjalankan langkah `pip install -r requirements.txt`.
+   - Pastikan file `hand_landmarker.task` SUDAH ADA di folder project.
+
+3. **Lampu tidak berubah padahal status di layar berubah**
+   - Cek koneksi internet.
+   - Pastikan perangkat lampu (ESP8266/ESP32) Anda terhubung ke Broker dan Topic yang sama persis (`202.74.74.42` topic `gesture/control`).
+
+---
+
+**Selamat Mencoba!** 🚀
+Dibuat dengan ❤️ oleh Duwi Arsana.
