@@ -116,9 +116,42 @@ MQTT_TOPIC = "rumah/kamar/lampu"
    - Pastikan Anda sudah menjalankan langkah `pip install -r requirements.txt`.
    - Pastikan file `hand_landmarker.task` SUDAH ADA di folder project.
 
-3. **Lampu tidak berubah padahal status di layar berubah**
-   - Cek koneksi internet.
-   - Pastikan perangkat lampu (ESP8266/ESP32) Anda terhubung ke Broker dan Topic yang sama persis (`202.74.74.42` topic `gesture/control`).
+3. **Lampu tidak berubah padahal status di layar berubah- **MQTT Gagal Connect**: Cek koneksi internet Anda atau pastikan broker MQTT sedang online.
+
+---
+
+## 📡 Firmware ESP8266 (Smart Lamp)
+
+Untuk mengontrol lampu sungguhan, gunakan folder `iot_firmware`.
+
+### Hardware
+- ESP8266 (NodeMCU / Wemos D1 Mini)
+- Modul Relay (koneksikan ke **D2 / GPIO 4**)
+- Lampu + Power Supply
+
+### Libraries (Arduino IDE)
+Install library berikut lewat Library Manager:
+1. `WiFiManager` by tzapu
+2. `PubSubClient` by Nick O'Leary
+3. `ArduinoJson` by Benoit Blanchon (versi 6.x)
+
+### Cara Upload
+1. Buka `iot_firmware/iot_relay.ino` di Arduino IDE.
+2. Upload ke board ESP8266 Anda.
+
+### Cara Setting (Pertama Kali)
+1. Nyalakan ESP8266.
+2. Cari WiFi bernama `Gesture_Lamp_AP` di HP/Laptop.
+3. Connect, lalu akan muncul halaman konfigurasi (atau buka `192.168.4.1`).
+4. Pilih WiFi rumah Anda.
+5. Masukkan konfigurasi MQTT:
+   - Server: `202.74.74.42`
+   - Port: `1883`
+   - Topic: `gesture/control`
+6. Save & Reboot. Alat siap digunakan!
+
+---
+Dikembangkan oleh Duwi Arsana.
 
 ---
 
